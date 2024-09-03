@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { OrdersService } from '../../core/services/orders.service';
 
 import { jwtDecode } from 'jwt-decode';
 import { Iproduct } from '../../core/interfaces/iproduct';
 import { IallOrders } from '../../core/interfaces/iall-orders';
+import { Subscription } from 'rxjs';
 // import { IallOrders } from '../../core/interfaces/iall-orders';
 
 
@@ -15,7 +16,7 @@ import { IallOrders } from '../../core/interfaces/iall-orders';
   templateUrl: './all-orders.component.html',
   styleUrl: './all-orders.component.scss'
 })
-export class AllOrdersComponent implements OnInit{
+export class AllOrdersComponent implements OnInit , OnDestroy{
 
 
   private readonly _OrdersService =inject(OrdersService)
@@ -26,11 +27,12 @@ allOrders:IallOrders[] = []
   tokenBefore : any = localStorage.getItem('userToken')
   tokenAfter : any = jwtDecode(this.tokenBefore)
 
+  AllOrdersSubscribe!:Subscription
 
 
 ngOnInit(): void {
   // console.log(this.tokenAfter.id)
-    this._OrdersService.getUserOrders(this.tokenAfter.id).subscribe({
+  this.AllOrdersSubscribe =  this._OrdersService.getUserOrders(this.tokenAfter.id).subscribe({
       next:(res)=>{
 
 
@@ -48,6 +50,9 @@ ngOnInit(): void {
 }
 
 
+ngOnDestroy(): void {
+  this.AllOrdersSubscribe?.unsubscribe()
 
+}
 
 }

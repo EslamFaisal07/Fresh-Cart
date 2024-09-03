@@ -43,6 +43,7 @@ private readonly _CartService = inject(CartService)
 
 
 detailsSub!:Subscription
+cartSubscription!:Subscription
 detailsProduct:Iproduct | null = null;
 
 ngOnInit(): void {
@@ -72,10 +73,11 @@ this._ActivatedRoute.paramMap.subscribe({
 
 
 addToCart(id:string):void{
-  this._CartService.addProductToCart(id).subscribe({
+ this.cartSubscription=this._CartService.addProductToCart(id).subscribe({
     next:(res)=>{
       // console.log(res);
       this._ToastrService.success(res.message , 'FreshCart')
+      this._CartService.cartNumber.set(res.numOfCartItems)
 
     },
     error:(err)=>{
@@ -88,6 +90,7 @@ addToCart(id:string):void{
 
 ngOnDestroy(): void {
 this.detailsSub.unsubscribe()
+this.cartSubscription.unsubscribe()
 }
 
 }

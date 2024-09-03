@@ -30,6 +30,9 @@ export class ProductComponent  implements OnInit , OnDestroy{
   private readonly _ProductsService =inject(ProductsService)
 
 productSubscribe!:Subscription
+cartSubscribe!:Subscription
+wishSubscribe!:Subscription
+removeSubscribe!:Subscription
 
 productList:Iproduct[]=[]
 
@@ -82,7 +85,7 @@ if (localStorage.getItem("heart") !==null) {
   }
 
   addToCart(id:string):void{
-    this._CartService.addProductToCart(id).subscribe({
+  this.cartSubscribe=  this._CartService.addProductToCart(id).subscribe({
       next:(res)=>{
         // console.log(res);
         this._ToastrService.success(res.message , 'FreshCart')
@@ -100,7 +103,7 @@ if (localStorage.getItem("heart") !==null) {
 
 
   wishAdd(id:string):void{
-    this._WishListService.addToWishList(id).subscribe({
+  this.wishSubscribe =   this._WishListService.addToWishList(id).subscribe({
       next:(res)=>{
         // console.log(res);
 
@@ -121,7 +124,7 @@ if (localStorage.getItem("heart") !==null) {
   }
 
   removeFromWishList(id:string):void{
-    this._WishListService.removeProductFromWishList(id).subscribe({
+   this.removeSubscribe =  this._WishListService.removeProductFromWishList(id).subscribe({
       next:(res)=>{
         // console.log(res);
         this.idArrarys = res.data
@@ -137,7 +140,10 @@ this._ToastrService.warning(res.message)
 
   }
   ngOnDestroy(): void {
-this.productSubscribe.unsubscribe()
+this.productSubscribe?.unsubscribe()
+this.cartSubscribe?.unsubscribe()
+this.wishSubscribe?.unsubscribe()
+this.removeSubscribe?.unsubscribe()
   }
 
 

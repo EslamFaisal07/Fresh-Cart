@@ -86,12 +86,11 @@ private readonly _WishListService = inject(WishListService)
 
 AllProductSubscribe!:Subscription
 categoriesSubscribe!:Subscription
+cartSubscribe!:Subscription
+wishAddSubscribe!:Subscription
+wishRemoveSubscribe!:Subscription
 
 idArrarys :any =null
-
-
-
-
 ngOnInit(): void {
    this.categoriesSubscribe =  this._CategoriesService.getAllCategories().subscribe({
   next:(res)=>{
@@ -106,8 +105,6 @@ ngOnInit(): void {
 
   }
 })
-
-
    this.AllProductSubscribe = this._ProductsService.getAllProduct().subscribe({
       next: (res) => {
         this.productList = res.data
@@ -131,13 +128,13 @@ ngOnInit(): void {
 }
 
 addToCart(id:string):void{
-  this._CartService.addProductToCart(id).subscribe({
+ this.cartSubscribe =  this._CartService.addProductToCart(id).subscribe({
     next:(res)=>{
       // console.log(res);
       this._ToastrService.success(res.message , 'FreshCart')
       this._CartService.cartNumber.set(res.numOfCartItems)
       console.log(res.numOfCartItems);
-// this._CartService.numOfCartItems = res.numOfCartItems
+
 
 
     },
@@ -148,12 +145,8 @@ addToCart(id:string):void{
   })
 }
 
-
-
-
-
 wishAdd(id:string):void{
-  this._WishListService.addToWishList(id).subscribe({
+ this.wishAddSubscribe =  this._WishListService.addToWishList(id).subscribe({
     next:(res)=>{
       // console.log(res);
 
@@ -174,16 +167,8 @@ localStorage.setItem("heart",this.idArrarys.toString())
 }
 
 
-
-
-
-
-
-
-
-
 removeFromWishList(id:string):void{
-  this._WishListService.removeProductFromWishList(id).subscribe({
+ this.wishRemoveSubscribe =  this._WishListService.removeProductFromWishList(id).subscribe({
     next:(res)=>{
       // console.log(res);
       this.idArrarys = res.data
@@ -202,5 +187,8 @@ this._ToastrService.warning(res.message)
 ngOnDestroy(): void {
 this.AllProductSubscribe?.unsubscribe()
 this.categoriesSubscribe?.unsubscribe()
+this.cartSubscribe?.unsubscribe()
+this.wishAddSubscribe?.unsubscribe()
+this.wishRemoveSubscribe?.unsubscribe()
 }
 }

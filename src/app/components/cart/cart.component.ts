@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, Signal, signal } from '@angular/core';
 import { CartService } from '../../core/services/cart.service';
 import { Icart } from '../../core/interfaces/icart';
 import { CurrencyPipe } from '@angular/common';
@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { json } from 'stream/consumers';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +16,7 @@ import { json } from 'stream/consumers';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit , OnDestroy {
 cartItem:Icart   = {} as Icart
 num : any
 numItems!:number
@@ -23,10 +24,13 @@ numItems!:number
   private readonly _CartService = inject(CartService)
   private readonly _ToastrService = inject(ToastrService)
 
-
+productSubscribe!:Subscription
+deleteSubscribe!:Subscription
+updateSubscribe!:Subscription
+clearSubscribe!:Subscription
 
 ngOnInit(): void {
-    this._CartService.getProductsCart().subscribe({
+ this.productSubscribe =    this._CartService.getProductsCart().subscribe({
       next:(res)=>{
         // console.log(res.data.products.length);
         this.num = res.data.products.length
@@ -35,7 +39,7 @@ ngOnInit(): void {
         this.cartItem=res.data
       },
       error:(err)=>{
-        // console.log(err);
+        console.log(err);
 
       }
     })
@@ -59,7 +63,7 @@ delete(id:string):void{
         text: "Your Product has been deleted.",
         icon: "success"
       }).then(()=>{
-        this._CartService.deleteSpecificCartItem(id).subscribe({
+      this.deleteSubscribe=  this._CartService.deleteSpecificCartItem(id).subscribe({
           next:(res)=>{
             // console.log(res);
             this.cartItem= res.data
@@ -72,7 +76,7 @@ delete(id:string):void{
 
           },
           error:(err)=>{
-            // console.log(err);
+            console.log(err);
           }
         })
       });
@@ -84,14 +88,14 @@ delete(id:string):void{
 
 updateCount(id:string , Count:number){
  if (Count > 0) {
-  this._CartService.updateProductQuantity(id,Count).subscribe({
+ this.updateSubscribe= this._CartService.updateProductQuantity(id,Count).subscribe({
     next:(res)=>{
       // console.log(res);
       this.cartItem= res.data
 
     },
     error:(err)=>{
-      // console.log(err);
+      console.log(err);
     }
   })
  }
@@ -112,7 +116,7 @@ clearItems():void{
         text: "Your Cart is Clear .",
         icon: "success"
       }).then(()=>{
-        this._CartService.clearCart().subscribe({
+     this.clearSubscribe=   this._CartService.clearCart().subscribe({
           next:(res)=>{
             // console.log(res);
            if(res.message =="success"){
@@ -123,7 +127,7 @@ clearItems():void{
 
           },
           error:(err)=>{
-            // console.log(err);
+            console.log(err);
 
           }
 
@@ -132,6 +136,13 @@ clearItems():void{
     }
   });
 
+}
+
+ngOnDestroy(): void {
+  this.productSubscribe?.unsubscribe()
+  this.deleteSubscribe?.unsubscribe()
+  this.updateSubscribe?.unsubscribe()
+  this.clearSubscribe?.unsubscribe()
 }
 
 }

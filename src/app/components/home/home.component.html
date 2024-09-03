@@ -7,21 +7,22 @@
 <div>
 
   <owl-carousel-o [options]="customOptionsMain">
-    <ng-template carouselSlide>  <img src="./assets/images/slide1.gif" height="450px" class="w-100" alt=""> </ng-template>
-    <ng-template carouselSlide>  <img src="./assets/images/slide2.avif" height="450px" class="w-100" alt=""> </ng-template>
-    <ng-template carouselSlide>  <img src="./assets/images/slide3.avif" height="450px" class="w-100" alt=""> </ng-template>
-    <ng-template carouselSlide>  <img src="./assets/images/slide4.avif" height="450px" class="w-100" alt=""> </ng-template>
-    <ng-template carouselSlide>  <img src="./assets/images/slide5.avif" height="450px" class="w-100" alt=""> </ng-template>
-    <ng-template carouselSlide>  <img src="./assets/images/slide6.avif" height="450px" class="w-100" alt=""> </ng-template>
-    <ng-template carouselSlide>  <img src="./assets/images/slide7.avif" height="450px" class="w-100" alt=""> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid1.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid2.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid3.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid4.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid5.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid6.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid7.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
+    <ng-template carouselSlide>  <img src="./assets/images/slid8.avif" height="450px" class="w-100 " alt="slide-img"> </ng-template>
 
 
   </owl-carousel-o>
 </div>
   </div>
   <div class="col-md-3">
-    <img src="./assets/images/grocery-banner.png" height="225px" class="w-100" alt="">
-    <img src="./assets/images/grocery-banner-2.jpeg" height="225px" class="w-100" alt="">
+    <img src="./assets/images/grocery-banner.png" height="225px" class="w-100" alt="slide-img">
+    <img src="./assets/images/grocery-banner-2.jpeg" height="225px" class="w-100" alt="slide-img">
 
   </div>
 </div>
@@ -54,7 +55,7 @@
 
 <section class="my-5">
   <h2 class="text-main my-3">Popular Products :</h2>
-  <input [(ngModel)]="textSearch" type="search" placeholder="search by name" class="form-control w-50 mx-auto my-4">
+  <input [(ngModel)]="textSearch" type="search" placeholder="search by name" class="form-control input  mx-auto my-4 ">
 <div class="row g-3">
 
   @for (product of productList.slice(0,12) |search:textSearch  ; track product.id) {

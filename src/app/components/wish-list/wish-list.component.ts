@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { WishListService } from '../../core/services/wish-list.service';
 import { IwishList } from '../../core/interfaces/iwish-list';
 import { RouterLink } from '@angular/router';
@@ -7,6 +7,7 @@ import { Iproduct } from '../../core/interfaces/iproduct';
 import { CartService } from '../../core/services/cart.service';
 import { Icart } from '../../core/interfaces/icart';
 import { log } from 'node:console';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-wish-list',
@@ -15,16 +16,20 @@ import { log } from 'node:console';
   templateUrl: './wish-list.component.html',
   styleUrl: './wish-list.component.scss'
 })
-export class WishListComponent implements OnInit {
+export class WishListComponent implements OnInit  , OnDestroy{
   private readonly _WishListService = inject(WishListService)
   private readonly _CartService = inject(CartService)
   private readonly _ToastrService = inject(ToastrService)
 
 wishList:Iproduct[]  = []
 
+getWishSubscribe!:Subscription
+removeWishSubscribe!:Subscription
+cartSubscribe!:Subscription
+
 
 ngOnInit(): void {
-    this._WishListService.getProductWishList().subscribe({
+  this.getWishSubscribe=  this._WishListService.getProductWishList().subscribe({
       next: (res) => {
 
         // console.log(res.data.length);
@@ -37,7 +42,7 @@ ngOnInit(): void {
 }
 
 removeProduct(id:string |undefined):void{
-  this._WishListService.removeProductFromWishList(id).subscribe({
+ this.removeWishSubscribe =  this._WishListService.removeProductFromWishList(id).subscribe({
     next: (res) => {
       // console.log(res);
 
@@ -47,7 +52,7 @@ this._ToastrService.error('Product removed from wish list')
 
 
 
-this._WishListService.getProductWishList().subscribe({
+  this.getWishSubscribe =   this._WishListService.getProductWishList().subscribe({
   next:(response)=>{
     // console.log(response);
     this.wishList = response.data
@@ -65,7 +70,7 @@ this._WishListService.getProductWishList().subscribe({
 
 
 addToCart(id:string):void{
-  this._CartService.addProductToCart(id).subscribe({
+ this.cartSubscribe =  this._CartService.addProductToCart(id).subscribe({
     next:(res)=>{
       // console.log(res);
       this._ToastrService.success(res.message , 'FreshCart')
@@ -81,5 +86,9 @@ addToCart(id:string):void{
   })
 }
 
-
+ngOnDestroy(): void {
+  this.getWishSubscribe?.unsubscribe()
+  this.removeWishSubscribe?.unsubscribe()
+  this.cartSubscribe?.unsubscribe()
+}
 }

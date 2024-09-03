@@ -27,7 +27,7 @@ ngOnInit(): void {
 
   },
   error: (error) => {
-    // console.log(error);
+    console.log(error);
   }
 })
 }
