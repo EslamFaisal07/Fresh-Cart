@@ -1,0 +1,67 @@
+<!-- @if (wishList ) { -->
+  <section class="my-5   py-5">
+    <div class="container">
+
+
+
+  <div class="row g-4">
+
+    @if (wishList.length !== 0 ) {
+      @for (item of wishList; track item._id) {
+        <div class="col-md-4 col-lg-3">
+           <div class="card product  p-2">
+
+
+       <i (click)="removeProduct(item.id)"  class="cr fa-solid fa-heart text-danger my-3 fa-xl"></i>
+
+
+
+           <div [routerLink]="['/details' , item.id]">
+
+             <img [src]="item.imageCover" class="w-100" [alt]="item.title">
+
+
+       <h3 class="small text-main mt-1">{{item.category.name}}</h3>
+
+
+
+
+
+
+
+             <h4 class="h6">{{item.title.split(" ",2).join(" ")}}</h4>
+             <div class="d-flex justify-content-between align-items-center">
+               <span> {{item.price}} EGP</span>
+               <div>
+               @for (item of [0,1,2,3,4,5].slice(0,item.ratingsAverage); track $index) {
+                 <i class="fas fa-star rating-color"></i>
+               }
+               @if (item.ratingsAverage%1 !== 0 ) {
+                 <i class="fa-regular fa-star-half-stroke rating-color"></i>
+               }
+                 <span class="text-muted">{{item.ratingsAverage}}</span>
+               </div>
+
+             </div>
+           </div>
+
+         <button class="btn-main w-100 mt-2" (click)="addToCart(item._id)"  >Add to Cart</button>
+
+           </div>
+                 </div>
+
+
+
+        }
+
+    }@else {
+    <img src="./assets/images/wishEmpty.jpg" class="w-50 mx-auto" alt="">
+    }
+
+
+  </div>
+    </div>
+  </section>
+
+
+<!-- } -->

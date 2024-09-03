@@ -1,0 +1,54 @@
+
+
+<section class="my-5 py-5">
+
+<h1 class="text-main text-center mt-3">Your Orders :</h1>
+
+<div class="row g-3">
+
+  @for (order of allOrders  ; track $index) {
+
+
+@for (i of order.cartItems; track $index) {
+ 
+
+  <div class="col-md-4 col-lg-2">
+    <div class="card product  p-2">
+
+
+    <div >
+  <img [src]="i.product.imageCover" class="w-100" [alt]="i.product.title">
+  <h3 class="small text-main mt-1">{{i.product.category.name}}</h3>
+  <h4 class="h6">{{i.product.brand.name}}</h4>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h6 >count :  {{i.count}}</h6>
+
+  <div>
+    @for (item of [0,1,2,3,4,5].slice(0,i.product.ratingsAverage); track $index) {
+      <i class="fas fa-star rating-color"></i>
+    }
+    @if (i.product.ratingsAverage%2 ) {
+      <i class="fa-regular fa-star-half-stroke rating-color"></i>
+    }
+      <span class="text-muted">{{i.product.ratingsAverage}}</span>
+    </div>
+</div>
+
+    </div>
+
+
+
+  </div>
+        </div>
+
+
+}
+
+
+
+
+  }
+ </div>
+
+</section>

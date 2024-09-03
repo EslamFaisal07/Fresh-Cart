@@ -1,0 +1,77 @@
+<section class="bg-main-light rounded-4 shadow p-2 w-75 mx-auto">
+  <h1 class="text-center"> Shipping Address</h1>
+
+
+  <!-- (ngSubmit)="orderSubmit()" -->
+  <form [formGroup]="orders" (ngSubmit)="orderSubmit()" >
+
+    <div class="my-2">
+      <label for="details">Details</label>
+      <input formControlName="details" id="details" class="form-control" type="text">
+      @if (orders.get("details")?.errors && (orders.get("details")?.touched || orders.get("details")?.dirty))
+      {
+       <div class="alert alert-danger w-100">
+         @if (orders.get("details")?.getError("required")) {
+           <p class="m-0">Details is Required .</p>
+
+         }
+
+
+       </div>
+     }
+    </div>
+    <div class="my-2">
+      <label for="phone">Phone</label>
+      <input formControlName="phone" id="phone" class="form-control" type="tel">
+      @if (orders.get("phone")?.errors && (orders.get("phone")?.touched ||orders.get("phone")?.dirty))
+      {
+       <div class="alert alert-danger w-100">
+         @if (orders.get("phone")?.getError("required")) {
+           <p class="m-0">phone is Required .</p>
+
+         }
+         @else if (orders.get("phone")?.getError("pattern")) {
+           <p class="m-0">accept only egypt phone numbers .</p>
+
+         }
+
+       </div>
+     }
+    </div>
+    <div class="my-2">
+      <label for="city">City</label>
+      <input formControlName="city" id="city" class="form-control" type="tel">
+      @if (orders.get("city")?.errors && (orders.get("city")?.touched || orders.get("city")?.dirty))
+      {
+       <div class="alert alert-danger w-100">
+         @if (orders.get("city")?.getError("required")) {
+           <p class="m-0">City is Required .</p>
+
+         }
+
+
+       </div>
+     }
+    </div>
+   <div class="d-flex align-items-center justify-content-center g-4 mt-4">
+
+    <button [disabled]="orders.invalid" (click)="cashOrder()" class="btn-main mx-3" type="button">Pay Cash
+      @if (isLoadingCash) {
+        <span><i class="fas fa-spin fa-spinner"></i></span>
+      }
+    </button>
+    <button [disabled]="orders.invalid" (click)="orderSubmit()" class="btn-main " type="submit">Online Payment <img width="50px" class="rounded-2" src="./assets/images/visa.jpg" alt="">
+      @if (isLoading) {
+        <span><i class="fas fa-spin fa-spinner"></i></span>
+      }
+    </button>
+   </div>
+    @if (msgError) {
+      <p class="alert alert-danger my-3 ">{{msgError}}</p>
+
+    }
+  </form>
+  @if (cashPay) {
+   <p class="alert alert-success mt-3 text-white text-center"> Cash Paid Success</p>
+  }
+</section>

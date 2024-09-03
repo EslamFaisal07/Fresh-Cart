@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/e-commerce",
+            "outputPath": "docs",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -30,9 +30,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+
+              "node_modules/ngx-spinner/animations/ball-spin.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/styles.scss",
+              "node_modules/sweetalert2/src/sweetalert2.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -102,5 +109,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "23ec8a49-ad07-4ee5-862f-c81f7255eb9f"
   }
 }

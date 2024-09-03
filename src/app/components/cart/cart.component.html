@@ -1,0 +1,52 @@
+<section class="bg-main-light rounded-4 shadow p-4 my-4 cart-sec mx-auto">
+  <h1 class="h2 text-main ">Shop Cart :</h1>
+  @if (numItems !== 0) {
+
+<div class="d-flex align-items-center justify-content-between">
+
+<button (click)="clearItems()" class="btn ms-auto btn-sm btn-outline-danger">Clear Cart </button>
+</div>
+<p class="text-main">Total Cart Price: {{cartItem.totalCartPrice |currency :'GBP'}}</p>
+
+  }
+<div>
+
+@for (item of cartItem.products; track item._id) {
+  <!-- @if (cartItem.products.length !==0) { -->
+
+    <div class="row mb-1 border-bottom">
+      <div class="col-md-1">
+        <div>      <img [src]="item.product.imageCover" class="w-100" [alt]="item.product.title">
+
+        </div>
+      </div>
+      <div class="col-md-11 d-flex justify-content-between align-items-center">
+  <div>
+    <h3 class="h5">{{item.product.title}}</h3>
+    <p class="text-main">Price:{{item.price}}</p>
+    <button (click)="delete(item.product._id)" class=" mb-3 border-0"><i class="fa-solid fa-trash text-danger cr" > </i>Remove</button>
+  </div>
+  <div class="d-flex align-items-center gap-3">
+    <span class="text-main cr" (click)="updateCount(item.product._id , item.count+1)"><i class="fa-regular fa-square-plus fa-2xl"></i></span>
+    <span class="">{{item.count}}</span>
+    <span class="text-main cr" (click)="updateCount(item.product._id , item.count-1)"> <i class="fa-regular fa-square-minus fa-2xl"></i></span>
+  </div>
+
+      </div>
+    </div>
+
+  }@empty { <img src="./assets/images/empty-cart.png" class="empty " alt="">}
+
+</div>
+@if (numItems !== 0) {
+
+<button [routerLink]="['/orders' , cartItem._id]" class="btn-main mt-3">Order Now</button>
+}
+
+
+
+
+</section>
+
+
+

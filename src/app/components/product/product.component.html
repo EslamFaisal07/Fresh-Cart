@@ -1,0 +1,72 @@
+
+<section class="my-5">
+  <h2 class="text-main text-center my-3">All Products </h2>
+  <input [(ngModel)]="textSearch" type="search" placeholder="search by name" class="form-control input mx-auto my-4">
+<div class="row g-3">
+
+  @for (product of productList | paginate
+  : {
+      id: 'productPaginate',
+      itemsPerPage: pageSize,
+      currentPage: currentPage,
+      totalItems: total
+    } | search : textSearch  ; track product.id) {
+
+    <div class="col-md-4 col-lg-2">
+  <div class="card product  p-2">
+
+
+    <span class=" mb-3" >
+      @if (idArrarys.includes(product.id)) {
+        <i class="fa-solid fa-heart text-danger fa-xl my-3 " (click)="removeFromWishList(product.id)"></i>
+      }@else {
+        <i   class="fa-regular fa-heart fa-xl text-main my-3 " (click)="wishAdd(product.id)"></i>
+
+      }
+</span>
+  <div [routerLink]="['/details' , product.id]">
+    <img [src]="product.imageCover" class="w-100" [alt]="product.title">
+    <h3 class="small text-main mt-1">{{product.category.name}}</h3>
+    <h4 class="h6">{{product.title.split(" ",2).join(" ")}}</h4>
+    <div class="d-flex justify-content-between align-items-center">
+      <span> {{product.price}} EGP</span>
+      <div>
+      @for (item of [0,1,2,3,4,5].slice(0,product.ratingsAverage); track $index) {
+        <i class="fas fa-star rating-color"></i>
+      }
+      @if (product.ratingsAverage%1 !== 0 ) {
+        <i class="fa-regular fa-star-half-stroke rating-color"></i>
+      }
+        <span class="text-muted">{{product.ratingsAverage}}</span>
+      </div>
+
+    </div>
+  </div>
+
+<button class="btn-main w-100 mt-2" (click)="addToCart(product.id)" >Add to Cart</button>
+
+  </div>
+        </div>
+
+
+  }
+
+ </div>
+ <div class="d-flex justify-content-center align-items-center mt-4">
+  <pagination-controls
+    id="productPaginate"
+    (pageChange)="pageChanged($event)"
+    (pageBoundsCorrection)="pageChanged($event)"
+    [maxSize]="9"
+    [directionLinks]="true"
+    [autoHide]="true"
+    [responsive]="true"
+    previousLabel="Previous"
+    nextLabel="Next"
+    screenReaderPaginationLabel="Pagination"
+    screenReaderPageLabel="page"
+    screenReaderCurrentLabel="You're on page"
+  >
+  </pagination-controls>
+  </div>
+</section>
