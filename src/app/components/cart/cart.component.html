@@ -1,14 +1,14 @@
 <section class="bg-main-light rounded-4 shadow p-4 my-4 cart-sec mx-auto">
   <h1 class="h2 text-main ">Shop Cart :</h1>
-  @if (numItems !== 0) {
-
+  @if (numItems  ) {
+   
 <div class="d-flex align-items-center justify-content-between">
 
 <button (click)="clearItems()" class="btn ms-auto btn-sm btn-outline-danger">Clear Cart </button>
 </div>
 <p class="text-main">Total Cart Price: {{cartItem.totalCartPrice |currency :'GBP'}}</p>
 
-  }
+
 <div>
 
 @for (item of cartItem.products; track item._id) {
@@ -35,12 +35,14 @@
       </div>
     </div>
 
-  }@empty { <img src="./assets/images/empty-cart.png" class="empty " alt="">}
+  }
 
+
+    <button [routerLink]="['/orders' , cartItem._id]" class="btn-main mt-3">Order Now</button>
 </div>
-@if (numItems !== 0) {
 
-<button [routerLink]="['/orders' , cartItem._id]" class="btn-main mt-3">Order Now</button>
+}@else {
+  <img src="./assets/images/empty-cart.png" class="empty " alt="">
 }
 
 
