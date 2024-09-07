@@ -18,7 +18,7 @@ myHeaders:any = {token:localStorage.getItem("userToken")}
 
 
   checkOut(id:string |null , shapingDetails:object):Observable<any>{
-    return this._HttpClient.post(`${environment.baseUrl}/api/v1/orders/checkout-session/${id}?url=${environment.urlServer}`,
+    return this._HttpClient.post(`${environment.baseUrl}/api/v1/orders/checkout-session/${id}?url=${window.location.origin}`,
       {
         "shippingAddress":shapingDetails
     }
@@ -34,7 +34,7 @@ myHeaders:any = {token:localStorage.getItem("userToken")}
 
   cashPayment(id:string , shapingDetails:object):Observable<any>{
     return this._HttpClient.post(`${environment.baseUrl}/api/v1/orders/${id}`,
-     
+
       {
         "shippingAddress" :shapingDetails
       }
